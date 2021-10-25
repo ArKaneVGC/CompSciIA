@@ -1,11 +1,10 @@
 package com.danielkyu2004.ibslia;
 
 
-import com.danielkyu2004.ibslia.Objects.*;
-import com.google.gson.Gson;
-import java.net.*;
+import com.danielkyu2004.ibslia.Objects.Display.Window;
+import com.danielkyu2004.ibslia.Objects.Display.Listeners.DisplayListener;
+
 import java.io.*;
-import javax.swing.*;
 
 public class Main {
     public static final String API_KEY = "AIzaSyCdTirhjw0dZB8KKU5-sqIZkH2ggXbvcDA";
@@ -16,8 +15,5 @@ public class Main {
 //        con.setRequestMethod("GET");
 //        Gson gson=new Gson();
         Window window =new Window();
-
-
-
     }
 }
