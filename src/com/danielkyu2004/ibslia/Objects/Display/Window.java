@@ -1,5 +1,6 @@
 package com.danielkyu2004.ibslia.Objects.Display;
 
+import com.danielkyu2004.ibslia.Objects.Display.Listeners.ButtonListener;
 import com.danielkyu2004.ibslia.Objects.Display.Listeners.DisplayListener;
 
 import javax.swing.*;
@@ -12,20 +13,16 @@ public class Window {
 
     public Window(){
         frame=new JFrame("frame title");
-        menuBar=new JMenuBar();
-        menu1=new JMenu("menu name");
-        Button butt = new Button();
-        butt.setLabel("butt");
+        frame.setSize(500,500);
+        JMenu butt= new JMenu("UwU butt OwO");
+        JMenuBar menu =new JMenuBar();
+        menu.add(butt);
+        menu.setVisible(true);
+        frame.add(menu);
         butt.setVisible(true);
-        menu1.add(butt);
-        menu1.setText("BUUUTTT");
-        menu1.setName("bUUTt");
-        menuBar.add(menu1);
-        menuBar.setVisible(true);
-        menu1.setVisible(true);
+
+        butt.addActionListener(new ButtonListener());
         frame.addWindowListener(new DisplayListener());
-        frame.setSize(new Dimension(500,300));
-        frame.setJMenuBar(menuBar);
 
 
 
