@@ -2,7 +2,6 @@ package com.danielkyu2004.ibslia;
 
 
 import com.danielkyu2004.ibslia.Objects.Display.Window;
-import com.danielkyu2004.ibslia.Objects.Display.Listeners.DisplayListener;
 
 import java.io.*;
 

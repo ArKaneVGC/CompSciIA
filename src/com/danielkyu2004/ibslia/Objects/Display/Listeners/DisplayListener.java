@@ -1,5 +1,6 @@
 package com.danielkyu2004.ibslia.Objects.Display.Listeners;
 
+import javax.swing.*;
 import java.awt.event.*;
 
 public class DisplayListener implements WindowListener {
@@ -20,6 +21,8 @@ public class DisplayListener implements WindowListener {
 
     @Override
     public void windowIconified(WindowEvent e) {
+        e.getWindow().setSize(e.getWindow().getHeight(),e.getWindow().getWidth());
+        System.out.println("bring me back :(");
 
     }
 
