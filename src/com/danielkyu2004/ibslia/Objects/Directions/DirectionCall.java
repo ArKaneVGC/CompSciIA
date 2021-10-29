@@ -7,4 +7,6 @@ public class DirectionCall {
     public String error_message;
 
     public DirectionCall(){}
+
+
 }

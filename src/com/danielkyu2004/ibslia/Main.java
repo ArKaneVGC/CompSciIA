@@ -1,6 +1,7 @@
 package com.danielkyu2004.ibslia;
 
 
+import com.danielkyu2004.ibslia.Objects.Directions.DirectionsConnection;
 import com.danielkyu2004.ibslia.Objects.Display.Window;
 
 import java.io.*;
@@ -14,5 +15,7 @@ public class Main {
 //        con.setRequestMethod("GET");
 //        Gson gson=new Gson();
         Window window =new Window();
+        DirectionsConnection dc=new DirectionsConnection();
+
     }
 }
