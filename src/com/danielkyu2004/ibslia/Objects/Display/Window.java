@@ -10,34 +10,36 @@ import java.awt.*;
 
 public class Window {
     public JFrame frame;
-    public JMenuBar menuBar;
-    public JMenu menu1;
+    public JPanel inputPanel;
+    public JPanel outputPanel;
 
-    public Window(){
-        frame=new JFrame("frame title");
-        GridBagLayout gbl=new GridBagLayout();
-        GridBagConstraints gbc=new GridBagConstraints();
+    //GBLs and GBCs
+    public GridBagLayout frameGBL, inputPanelGBL, outputPanelGBL;
+    public GridBagConstraints frameGBC, inputPanelGBC, outputPanelGBC;
 
-        for(int i=1; i<=50;i++) {
-            JButton button = new JButton("butt: " + i);
-            gbl.setConstraints(button, gbc);
-            button.setBorder(new LineBorder(Color.RED));
-            frame.add(button);
-            if(i%10==0)
-                gbc.gridwidth=GridBagConstraints.REMAINDER;
-            else
-                gbc.gridwidth=GridBagConstraints.RELATIVE;
+    public Window() {
+        //initialize variables
+        frame = new JFrame("Day Planner");
+        frameGBL = new GridBagLayout();
+        frameGBC = new GridBagConstraints();
 
-        }
-        frame.setLayout(gbl);
-        frame.setSize(500,500);
+        //set GridBagConstraints
+        frameGBC.gridy = GridBagConstraints.RELATIVE;
+        frameGBC.ipady = 30;
+        frameGBC.anchor = GridBagConstraints.NORTH;
 
-//        JTextField input=new JTextField(5);
-//        gbl.setConstraints(input,gbc);
-//        frame.add(input);
-//        input.getDocument().addDocumentListener(new TextListener(input));
-//        input.setText("hi");
-//        input.setBorder(new LineBorder(Color.RED));
+        //create input panel
+        makeinputPanel();
+        frameGBL.setConstraints(inputPanel, frameGBC);
+        makeOutputPanel();
+        frameGBL.setConstraints(outputPanel, frameGBC);
+
+
+        //create output panel
+
+
+        frame.setSize(500, 500);
+        frame.setLayout(frameGBL);
 
 
         frame.setVisible(true);
@@ -45,6 +47,91 @@ public class Window {
         frame.addWindowListener(new DisplayListener());
 
 
+    }
+
+    //initialize inputPanel
+    public void makeinputPanel() {
+        //initialize
+        inputPanel = new JPanel();
+        inputPanel.setBorder(new LineBorder(Color.BLACK));
+        inputPanelGBL = new GridBagLayout();
+        inputPanelGBC = new GridBagConstraints();
+
+
+        //set gridbagconstraints
+        inputPanelGBC.gridx = GridBagConstraints.RELATIVE;
+        inputPanelGBC.weighty = 3;
+        inputPanelGBC.ipadx = 10;
+        inputPanelGBC.anchor = GridBagConstraints.CENTER;
+
+        //initialize enter button
+        inputPanelGBC.weightx = 0.25;
+        JButton enterButton = new JButton("Enter");
+        inputPanelGBL.setConstraints(enterButton, inputPanelGBC);
+
+        //initialize input field
+        inputPanelGBC.weightx = 0.6;
+        JTextField input = new JTextField();
+        input.setPreferredSize(new Dimension(300, 25));
+        inputPanelGBL.setConstraints(input, inputPanelGBC);
+
+        //initialize label
+        inputPanelGBC.weightx = 0.15;
+        JLabel label = new JLabel("Input: ");
+        inputPanelGBL.setConstraints(label, inputPanelGBC);
+
+
+        //add to panel
+        inputPanel.add(label);
+        inputPanel.add(input);
+        inputPanelGBC.gridwidth = GridBagConstraints.REMAINDER;
+        inputPanel.add(enterButton);
+        frame.add(inputPanel);
+
+        //create listener
+        enterButton.addActionListener(new ButtonListener(input));
+
+
+        input.setBorder(new LineBorder(Color.GRAY));
+        inputPanel.setPreferredSize(new Dimension(500, 100));
+        inputPanel.setLayout(inputPanelGBL);
+
+    }
+
+    //output panel
+    public void makeOutputPanel() {
+        //initialize
+        outputPanel = new JPanel();
+        outputPanel.setBorder(new LineBorder(Color.BLACK));
+        outputPanelGBL = new GridBagLayout();
+        outputPanelGBC = new GridBagConstraints();
+
+        //set gridbagconstraints
+        outputPanelGBC.gridy = GridBagConstraints.RELATIVE;
+        outputPanelGBC.weighty = 3;
+        outputPanelGBC.ipadx = 10;
+        outputPanelGBC.anchor = GridBagConstraints.CENTER;
+
+
+        //use variables
+        outputPanel.setPreferredSize(new Dimension(100, 250));
+        outputPanel.setLayout(outputPanelGBL);
+        frame.add(outputPanel);
+
+
+    }
+
+    //output to output panel
+    public void outputToPanel(String output) {
+        System.out.println(output);
+        JLabel outputLabel = new JLabel(output);
+        outputPanelGBL.setConstraints(outputLabel, outputPanelGBC);
+        outputPanel.add(outputLabel);
+
+        frame.invalidate();
+        frame.validate();
+        frame.repaint();
 
     }
 }
+

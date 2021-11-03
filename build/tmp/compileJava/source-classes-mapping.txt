@@ -1,7 +1,7 @@
 com/danielkyu2004/ibslia/Objects/Directions/DirectionsLeg.java
  com.danielkyu2004.ibslia.Objects.Directions.DirectionsLeg
-com/danielkyu2004/ibslia/Objects/Display/Listeners/ButtonListener.java
- com.danielkyu2004.ibslia.Objects.Display.Listeners.ButtonListener
+com/danielkyu2004/ibslia/Objects/Directions/DirectionsStep.java
+ com.danielkyu2004.ibslia.Objects.Directions.DirectionsStep
 com/danielkyu2004/ibslia/Objects/Directions/LatLngLiteral.java
  com.danielkyu2004.ibslia.Objects.Directions.LatLngLiteral
 com/danielkyu2004/ibslia/Objects/Directions/DirectionsRoute.java
@@ -38,9 +38,9 @@ com/danielkyu2004/ibslia/Objects/Directions/TravelMode.java
  com.danielkyu2004.ibslia.Objects.Directions.TravelMode
 com/danielkyu2004/ibslia/Objects/Directions/DirectionCall.java
  com.danielkyu2004.ibslia.Objects.Directions.DirectionCall
-com/danielkyu2004/ibslia/Objects/Directions/DirectionsStep.java
- com.danielkyu2004.ibslia.Objects.Directions.DirectionsStep
 com/danielkyu2004/ibslia/Main.java
  com.danielkyu2004.ibslia.Main
+com/danielkyu2004/ibslia/Objects/Display/Listeners/ButtonListener.java
+ com.danielkyu2004.ibslia.Objects.Display.Listeners.ButtonListener
 com/danielkyu2004/ibslia/Objects/Display/Window.java
  com.danielkyu2004.ibslia.Objects.Display.Window
