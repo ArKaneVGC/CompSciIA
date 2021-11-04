@@ -25,18 +25,20 @@ public class Window {
 
         //set GridBagConstraints
         frameGBC.gridy = GridBagConstraints.RELATIVE;
+        frameGBC.gridwidth=GridBagConstraints.REMAINDER;
         frameGBC.ipady = 30;
+        frameGBC.ipadx=60;
         frameGBC.anchor = GridBagConstraints.NORTH;
 
         //create input panel
         makeinputPanel();
         frameGBL.setConstraints(inputPanel, frameGBC);
-        makeOutputPanel();
-        frameGBL.setConstraints(outputPanel, frameGBC);
+
 
 
         //create output panel
-
+        makeOutputPanel();
+        frameGBL.setConstraints(outputPanel, frameGBC);
 
         frame.setSize(500, 500);
         frame.setLayout(frameGBL);
@@ -114,7 +116,7 @@ public class Window {
 
 
         //use variables
-        outputPanel.setPreferredSize(new Dimension(100, 250));
+        outputPanel.setPreferredSize(new Dimension(400, 100));
         outputPanel.setLayout(outputPanelGBL);
         frame.add(outputPanel);
 
@@ -134,4 +136,3 @@ public class Window {
 
     }
 }
-
