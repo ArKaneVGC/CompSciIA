@@ -2,7 +2,7 @@ package com.danielkyu2004.ibslia.Objects.Display;
 
 import com.danielkyu2004.ibslia.Objects.Display.Listeners.ButtonListener;
 import com.danielkyu2004.ibslia.Objects.Display.Listeners.DisplayListener;
-import com.danielkyu2004.ibslia.Objects.Display.Listeners.TextListener;
+import com.danielkyu2004.ibslia.Objects.Display.Listeners.SuicideButtonListener;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -26,11 +26,11 @@ public class Window {
         //set GridBagConstraints
         frameGBC.gridy = GridBagConstraints.RELATIVE;
         frameGBC.gridwidth=GridBagConstraints.REMAINDER;
-        frameGBC.ipady = 30;
-        frameGBC.ipadx=60;
+        frameGBC.insets=new Insets(5,5,5,5);
         frameGBC.anchor = GridBagConstraints.NORTH;
 
         //create input panel
+
         makeinputPanel();
         frameGBL.setConstraints(inputPanel, frameGBC);
 
@@ -40,13 +40,15 @@ public class Window {
         makeOutputPanel();
         frameGBL.setConstraints(outputPanel, frameGBC);
 
-        frame.setSize(500, 500);
+        frame.setSize(1000, 750);
         frame.setLayout(frameGBL);
+        resizeFrame(frame);
 
-
+        frame.addComponentListener(new DisplayListener());
         frame.setVisible(true);
+        frame.toFront();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.addWindowListener(new DisplayListener());
+
 
 
     }
@@ -84,6 +86,12 @@ public class Window {
 
 
         //add to panel
+        JLabel inTitle=new JLabel("INPUT: Type your destinations");
+        inputPanelGBC.gridwidth=GridBagConstraints.REMAINDER;
+        inputPanelGBL.setConstraints(inTitle,inputPanelGBC);
+        inputPanel.add(inTitle);
+        inputPanelGBC.gridwidth=GridBagConstraints.RELATIVE;
+
         inputPanel.add(label);
         inputPanel.add(input);
         inputPanelGBC.gridwidth = GridBagConstraints.REMAINDER;
@@ -91,6 +99,7 @@ public class Window {
         frame.add(inputPanel);
 
         //create listener
+        input.addActionListener(new ButtonListener(input));
         enterButton.addActionListener(new ButtonListener(input));
 
 
@@ -116,7 +125,13 @@ public class Window {
 
 
         //use variables
-        outputPanel.setPreferredSize(new Dimension(400, 100));
+        JLabel outTitle=new JLabel("OUTPUT: Click items to remove them");
+        outputPanelGBC.gridwidth=GridBagConstraints.REMAINDER;
+        outputPanelGBL.setConstraints(outTitle,outputPanelGBC);
+        outputPanel.add(outTitle);
+
+        outputPanelGBC.gridwidth=GridBagConstraints.RELATIVE;
+
         outputPanel.setLayout(outputPanelGBL);
         frame.add(outputPanel);
 
@@ -126,13 +141,25 @@ public class Window {
     //output to output panel
     public void outputToPanel(String output) {
         System.out.println(output);
-        JLabel outputLabel = new JLabel(output);
-        outputPanelGBL.setConstraints(outputLabel, outputPanelGBC);
-        outputPanel.add(outputLabel);
+        JButton outputButton = new JButton(output);
+        outputPanelGBL.setConstraints(outputButton, outputPanelGBC);
+        outputPanel.add(outputButton);
+        outputButton.addActionListener(new SuicideButtonListener(outputPanel,outputButton));
+        updateFrame();
+    }
 
+    //repaint panel
+    public void updateFrame(){
         frame.invalidate();
         frame.validate();
         frame.repaint();
-
     }
+
+    public void resizeFrame(Component comp){
+        Dimension d=new Dimension(comp.getWidth()*3/5,comp.getHeight()/3);
+        outputPanel.setPreferredSize(d);
+        inputPanel.setPreferredSize(d);
+        updateFrame();
+    }
+
 }

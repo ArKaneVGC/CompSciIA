@@ -1,39 +1,16 @@
 package com.danielkyu2004.ibslia.Objects.Display.Listeners;
 
+import com.danielkyu2004.ibslia.Main;
+
+import java.awt.*;
 import java.awt.event.*;
 
-public class DisplayListener implements WindowListener {
+import static com.danielkyu2004.ibslia.Main.window;
+
+public class DisplayListener extends ComponentAdapter{
     @Override
-    public void windowOpened(WindowEvent e) {
+    public void componentResized(ComponentEvent e) {
 
     }
 
-    @Override
-    public void windowClosing(WindowEvent e) {
-        e.getWindow().dispose();
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-        e.getWindow().setSize(e.getWindow().getHeight()+10,e.getWindow().getWidth()+10);
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
-    }
 }
