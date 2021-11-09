@@ -1,5 +1,5 @@
 package com.danielkyu2004.ibslia.Objects.Directions;
-import com.danielkyu2004.ibslia.cfg.Config;
+import com.danielkyu2004.ibslia.Config;
 import com.danielkyu2004.ibslia.Objects.Directions.PlaceIDs.PlaceIDResponse;
 import com.google.gson.Gson;
 
