@@ -1,165 +1,104 @@
 package com.danielkyu2004.ibslia.Objects.Display;
 
 import com.danielkyu2004.ibslia.Objects.Display.Listeners.ButtonListener;
-import com.danielkyu2004.ibslia.Objects.Display.Listeners.DisplayListener;
-import com.danielkyu2004.ibslia.Objects.Display.Listeners.SuicideButtonListener;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
-
-public class Window {
-    public JFrame frame;
-    public JPanel inputPanel;
-    public JPanel outputPanel;
-
-    //GBLs and GBCs
-    public GridBagLayout frameGBL, inputPanelGBL, outputPanelGBL;
-    public GridBagConstraints frameGBC, inputPanelGBC, outputPanelGBC;
-
-    public Window() {
-        //initialize variables
-        frame = new JFrame("Day Planner");
-        frameGBL = new GridBagLayout();
-        frameGBC = new GridBagConstraints();
-
-        //set GridBagConstraints
-        frameGBC.gridy = GridBagConstraints.RELATIVE;
-        frameGBC.gridwidth=GridBagConstraints.REMAINDER;
-        frameGBC.insets=new Insets(5,5,5,5);
-        frameGBC.anchor = GridBagConstraints.NORTH;
-
-        //create input panel
-
-        makeinputPanel();
-        frameGBL.setConstraints(inputPanel, frameGBC);
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 
+//All generated with jvider
+public class Window extends JFrame {
 
-        //create output panel
-        makeOutputPanel();
-        frameGBL.setConstraints(outputPanel, frameGBC);
+    public JPanel InputPanel;
+    public JTextField tfInputField;
+    public JButton InputButton;
 
-        frame.setSize(1000, 750);
-        frame.setLayout(frameGBL);
-        resizeFrame(frame);
+    public JPanel OutputPanel;
+    public JButton DeleteButton;
+    public JList lsOutputList;
+    public JButton FinalButton;
 
-        frame.addComponentListener(new DisplayListener());
-        frame.setVisible(true);
-        frame.toFront();
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    //window constructor
+    public Window()
+    {
+        super();
+        setTitle("DayScheduler");
 
+        GridBagLayout gbWindow = new GridBagLayout();
+        GridBagConstraints gbcWindow = new GridBagConstraints();
+        setLayout( gbWindow );
 
+        InputPanel = new JPanel();
+        InputPanel.setBorder( BorderFactory.createTitledBorder( "Input:" ) );
+        GridBagLayout gbInputPanel = new GridBagLayout();
+        GridBagConstraints gbcInputPanel = new GridBagConstraints(1,1,10,2,1,0,11,2,new Insets( 5,30,5,30 ),0,0);
+        InputPanel.setLayout( gbInputPanel );
 
+        tfInputField = new JTextField( );
+        tfInputField.setMargin( new Insets( 0,50,0,50 ) );
+        gbInputPanel.setConstraints( tfInputField, gbcInputPanel );
+        InputPanel.add( tfInputField );
+
+        InputButton = new JButton( "Enter"  );
+        InputButton.addActionListener(new ButtonListener());
+        gbcInputPanel=new GridBagConstraints(4,3,4,1,1,0,11,0,gbcInputPanel.insets,0,0);
+        gbInputPanel.setConstraints( InputButton, gbcInputPanel );
+        InputPanel.add( InputButton );
+
+        gbcInputPanel=new GridBagConstraints(4,5,11,5,1,0,11,1,new Insets(0,50,0,50),0,0);
+        gbWindow.setConstraints( InputPanel, gbcWindow );
+        add( InputPanel );
+
+        //outputpanel initialization
+        OutputPanel = new JPanel();
+        OutputPanel.setBorder( BorderFactory.createTitledBorder( "Output:" ) );
+        GridBagLayout gbOutputPanel = new GridBagLayout();
+        GridBagConstraints gbcOutputPanel = new GridBagConstraints(9,2,3,3,1,0,13,3,new Insets(0,0,0,50),0,0);
+        OutputPanel.setLayout( gbOutputPanel );
+
+        DeleteButton = new JButton( "Delete"  );
+        DeleteButton.addActionListener( new ButtonListener() );
+        gbOutputPanel.setConstraints( DeleteButton, gbcOutputPanel );
+        OutputPanel.add( DeleteButton );
+
+        lsOutputList = new JList<String>();
+        gbcOutputPanel.gridx = 0;
+        gbcOutputPanel.gridy = 0;
+        gbcOutputPanel.gridwidth = 9;
+        gbcOutputPanel.gridheight = 7;
+        gbcOutputPanel.fill = GridBagConstraints.HORIZONTAL;
+        gbcOutputPanel.weightx = 1;
+        gbcOutputPanel.weighty = 1;
+        gbcOutputPanel.anchor = GridBagConstraints.NORTH;
+        gbOutputPanel.setConstraints( lsOutputList, gbcOutputPanel );
+        OutputPanel.add( lsOutputList );
+        gbcWindow.gridx = 4;
+        gbcWindow.gridy = 13;
+        gbcWindow.gridwidth = 11;
+        gbcWindow.gridheight = 5;
+        gbcWindow.fill = GridBagConstraints.BOTH;
+        gbcWindow.weightx = 1;
+        gbcWindow.weighty = 0;
+        gbcWindow.anchor = GridBagConstraints.NORTH;
+        gbcWindow.insets = new Insets( 5,25,0,0 );
+        gbWindow.setConstraints( OutputPanel, gbcWindow );
+        add( OutputPanel );
+
+        FinalButton = new JButton( "Complete"  );
+        FinalButton.addActionListener( new ButtonListener() );
+        gbcWindow.gridx = 6;
+        gbcWindow.gridy = 19;
+        gbcWindow.gridwidth = 7;
+        gbcWindow.gridheight = 1;
+        gbcWindow.fill = GridBagConstraints.VERTICAL;
+        gbcWindow.weightx = 1;
+        gbcWindow.weighty = 0;
+        gbcWindow.anchor = GridBagConstraints.NORTH;
+        gbcWindow.insets = new Insets( 30,0,30,0 );
+        gbWindow.setConstraints( FinalButton, gbcWindow );
+        add( FinalButton );
+        this.setSize(500,500);
     }
-
-    //initialize inputPanel
-    public void makeinputPanel() {
-        //initialize
-        inputPanel = new JPanel();
-        inputPanel.setBorder(new LineBorder(Color.BLACK));
-        inputPanelGBL = new GridBagLayout();
-        inputPanelGBC = new GridBagConstraints();
-
-
-        //set gridbagconstraints
-        inputPanelGBC.gridx = GridBagConstraints.RELATIVE;
-        inputPanelGBC.weighty = 3;
-        inputPanelGBC.ipadx = 10;
-        inputPanelGBC.anchor = GridBagConstraints.CENTER;
-
-        //initialize enter button
-        inputPanelGBC.weightx = 0.25;
-        JButton enterButton = new JButton("Enter");
-        inputPanelGBL.setConstraints(enterButton, inputPanelGBC);
-
-        //initialize input field
-        inputPanelGBC.weightx = 0.6;
-        JTextField input = new JTextField();
-        input.setPreferredSize(new Dimension(300, 25));
-        inputPanelGBL.setConstraints(input, inputPanelGBC);
-
-        //initialize label
-        inputPanelGBC.weightx = 0.15;
-        JLabel label = new JLabel("Input: ");
-        inputPanelGBL.setConstraints(label, inputPanelGBC);
-
-
-        //add to panel
-        JLabel inTitle=new JLabel("INPUT: Type your destinations");
-        inputPanelGBC.gridwidth=GridBagConstraints.REMAINDER;
-        inputPanelGBL.setConstraints(inTitle,inputPanelGBC);
-        inputPanel.add(inTitle);
-        inputPanelGBC.gridwidth=GridBagConstraints.RELATIVE;
-
-        inputPanel.add(label);
-        inputPanel.add(input);
-        inputPanelGBC.gridwidth = GridBagConstraints.REMAINDER;
-        inputPanel.add(enterButton);
-        frame.add(inputPanel);
-
-        //create listener
-        input.addActionListener(new ButtonListener(input));
-        enterButton.addActionListener(new ButtonListener(input));
-
-
-        input.setBorder(new LineBorder(Color.GRAY));
-        inputPanel.setPreferredSize(new Dimension(500, 100));
-        inputPanel.setLayout(inputPanelGBL);
-
-    }
-
-    //output panel
-    public void makeOutputPanel() {
-        //initialize
-        outputPanel = new JPanel();
-        outputPanel.setBorder(new LineBorder(Color.BLACK));
-        outputPanelGBL = new GridBagLayout();
-        outputPanelGBC = new GridBagConstraints();
-
-        //set gridbagconstraints
-        outputPanelGBC.gridy = GridBagConstraints.RELATIVE;
-        outputPanelGBC.weighty = 3;
-        outputPanelGBC.ipadx = 10;
-        outputPanelGBC.anchor = GridBagConstraints.CENTER;
-
-
-        //use variables
-        JLabel outTitle=new JLabel("OUTPUT: Click items to remove them");
-        outputPanelGBC.gridwidth=GridBagConstraints.REMAINDER;
-        outputPanelGBL.setConstraints(outTitle,outputPanelGBC);
-        outputPanel.add(outTitle);
-
-        outputPanelGBC.gridwidth=GridBagConstraints.RELATIVE;
-
-        outputPanel.setLayout(outputPanelGBL);
-        frame.add(outputPanel);
-
-
-    }
-
-    //output to output panel
-    public void outputToPanel(String output) {
-        System.out.println(output);
-        JButton outputButton = new JButton(output);
-        outputPanelGBL.setConstraints(outputButton, outputPanelGBC);
-        outputPanel.add(outputButton);
-        outputButton.addActionListener(new SuicideButtonListener(outputPanel,outputButton));
-        updateFrame();
-    }
-
-    //repaint panel
-    public void updateFrame(){
-        frame.invalidate();
-        frame.validate();
-        frame.repaint();
-    }
-
-    public void resizeFrame(Component comp){
-        Dimension d=new Dimension(comp.getWidth()*3/5,comp.getHeight()/3);
-        outputPanel.setPreferredSize(d);
-        inputPanel.setPreferredSize(d);
-        updateFrame();
-    }
-
 }

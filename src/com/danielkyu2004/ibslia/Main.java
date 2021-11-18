@@ -29,6 +29,7 @@ public class Main {
 //        System.out.println(cr);
 
         window =new Window();
+        window.setVisible(true);
         DirectionsConnection dc=new DirectionsConnection();
 
     }
