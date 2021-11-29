@@ -3,21 +3,20 @@ package com.danielkyu2004.ibslia.Objects.Display;
 import com.danielkyu2004.ibslia.Objects.Display.Listeners.ButtonListener;
 
 import javax.swing.*;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
+import java.util.Vector;
 
 
 //All generated with jvider
 public class Window extends JFrame {
 
-    public JPanel InputPanel;
+    public JPanel inputPanel, outputPanel;
     public JTextField tfInputField;
-    public JButton InputButton;
+    public JButton inputButton;
 
-    public JPanel OutputPanel;
     public JButton DeleteButton;
-    public JList lsOutputList;
+    public JList<String> lsOutputList;
+    public Vector<String> outputVector;
     public JButton FinalButton;
 
     //window constructor
@@ -30,75 +29,74 @@ public class Window extends JFrame {
         GridBagConstraints gbcWindow = new GridBagConstraints();
         setLayout( gbWindow );
 
-        InputPanel = new JPanel();
-        InputPanel.setBorder( BorderFactory.createTitledBorder( "Input:" ) );
+
+        //input panel
+        inputPanel = new JPanel();
+        inputPanel.setBorder( BorderFactory.createTitledBorder( "Input:" ) );
         GridBagLayout gbInputPanel = new GridBagLayout();
         GridBagConstraints gbcInputPanel = new GridBagConstraints(1,1,10,2,1,0,11,2,new Insets( 5,30,5,30 ),0,0);
-        InputPanel.setLayout( gbInputPanel );
+        inputPanel.setLayout( gbInputPanel );
 
         tfInputField = new JTextField( );
-        tfInputField.setMargin( new Insets( 0,50,0,50 ) );
+        tfInputField.addActionListener(new ButtonListener());
         gbInputPanel.setConstraints( tfInputField, gbcInputPanel );
-        InputPanel.add( tfInputField );
+        inputPanel.add( tfInputField );
 
-        InputButton = new JButton( "Enter"  );
-        InputButton.addActionListener(new ButtonListener());
+        inputButton = new JButton( "Enter"  );
+        inputButton.addActionListener(new ButtonListener());
         gbcInputPanel=new GridBagConstraints(4,3,4,1,1,0,11,0,gbcInputPanel.insets,0,0);
-        gbInputPanel.setConstraints( InputButton, gbcInputPanel );
-        InputPanel.add( InputButton );
+        gbInputPanel.setConstraints(inputButton, gbcInputPanel );
+        inputPanel.add(inputButton);
 
-        gbcInputPanel=new GridBagConstraints(4,5,11,5,1,0,11,1,new Insets(0,50,0,50),0,0);
-        gbWindow.setConstraints( InputPanel, gbcWindow );
-        add( InputPanel );
+        gbcWindow=new GridBagConstraints(4,5,11,5,1,0,11,1,new Insets(0,50,0,50),0,0);
+        gbWindow.setConstraints(inputPanel, gbcWindow );
+        add(inputPanel);
 
         //outputpanel initialization
-        OutputPanel = new JPanel();
-        OutputPanel.setBorder( BorderFactory.createTitledBorder( "Output:" ) );
-        GridBagLayout gbOutputPanel = new GridBagLayout();
-        GridBagConstraints gbcOutputPanel = new GridBagConstraints(9,2,3,3,1,0,13,3,new Insets(0,0,0,50),0,0);
-        OutputPanel.setLayout( gbOutputPanel );
+        outputPanel = new JPanel();
+        outputPanel.setBorder( BorderFactory.createTitledBorder( "Output:" ) );
+        GridBagLayout gblOutputPanel = new GridBagLayout();
 
+        GridBagConstraints gbcOutputPanel = new GridBagConstraints(9,2,3,3,1,0,13,3,new Insets(0,0,0,0),0,0);
+        outputPanel.setLayout( gblOutputPanel );
         DeleteButton = new JButton( "Delete"  );
         DeleteButton.addActionListener( new ButtonListener() );
-        gbOutputPanel.setConstraints( DeleteButton, gbcOutputPanel );
-        OutputPanel.add( DeleteButton );
+        gblOutputPanel.setConstraints( DeleteButton, gbcOutputPanel );
+        outputPanel.add( DeleteButton );
 
-        lsOutputList = new JList<String>();
-        gbcOutputPanel.gridx = 0;
-        gbcOutputPanel.gridy = 0;
-        gbcOutputPanel.gridwidth = 9;
-        gbcOutputPanel.gridheight = 7;
-        gbcOutputPanel.fill = GridBagConstraints.HORIZONTAL;
-        gbcOutputPanel.weightx = 1;
-        gbcOutputPanel.weighty = 1;
-        gbcOutputPanel.anchor = GridBagConstraints.NORTH;
-        gbOutputPanel.setConstraints( lsOutputList, gbcOutputPanel );
-        OutputPanel.add( lsOutputList );
-        gbcWindow.gridx = 4;
-        gbcWindow.gridy = 13;
-        gbcWindow.gridwidth = 11;
-        gbcWindow.gridheight = 5;
-        gbcWindow.fill = GridBagConstraints.BOTH;
-        gbcWindow.weightx = 1;
-        gbcWindow.weighty = 0;
-        gbcWindow.anchor = GridBagConstraints.NORTH;
-        gbcWindow.insets = new Insets( 5,25,0,0 );
-        gbWindow.setConstraints( OutputPanel, gbcWindow );
-        add( OutputPanel );
+        //Outputted list
+        lsOutputList = new JList<>();
+        outputVector=new Vector<>();
+        gbcOutputPanel=new GridBagConstraints(0,0,9,15,1,1,11,2,new Insets(5,0,0,0),0,0);
+        gblOutputPanel.setConstraints( lsOutputList, gbcOutputPanel );
+        outputPanel.add( lsOutputList );
 
+
+        gbcWindow=new GridBagConstraints(4,13,11,5,1,0,11,1,new Insets(5,25,0,25),0,0);
+        gbWindow.setConstraints(outputPanel, gbcWindow );
+        add(outputPanel);
+
+
+        //final button
         FinalButton = new JButton( "Complete"  );
         FinalButton.addActionListener( new ButtonListener() );
-        gbcWindow.gridx = 6;
-        gbcWindow.gridy = 19;
-        gbcWindow.gridwidth = 7;
-        gbcWindow.gridheight = 1;
-        gbcWindow.fill = GridBagConstraints.VERTICAL;
-        gbcWindow.weightx = 1;
-        gbcWindow.weighty = 0;
-        gbcWindow.anchor = GridBagConstraints.NORTH;
-        gbcWindow.insets = new Insets( 30,0,30,0 );
+        gbcWindow=new GridBagConstraints(6,19,7,1,1,0,15,3,new Insets(30,0,30,0),0,0);
         gbWindow.setConstraints( FinalButton, gbcWindow );
         add( FinalButton );
-        this.setSize(500,500);
+
+        JLabel title = new JLabel( "DAY SCHEDULER"  );
+        title.setFont(title.getFont().deriveFont(32.0f));
+        gbcWindow=new GridBagConstraints(5,1,9,3,1,0,11,0,new Insets(0,0,0,0),0,0);
+        gbWindow.setConstraints( title, gbcWindow );
+        add( title );
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(500,700);
+    }
+
+    public void refresh(){
+        invalidate();
+        validate();
+        repaint();
     }
 }

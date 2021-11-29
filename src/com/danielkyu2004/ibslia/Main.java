@@ -1,16 +1,13 @@
 package com.danielkyu2004.ibslia;
 
 
-import com.danielkyu2004.ibslia.Objects.Color.ColorObject;
-import com.danielkyu2004.ibslia.Objects.Color.ColorRequest;
 import com.danielkyu2004.ibslia.Objects.Directions.DirectionsConnection;
 import com.danielkyu2004.ibslia.Objects.Display.Window;
 import com.google.gson.Gson;
 
 import java.io.*;
 import java.net.*;
-import java.util.Map;
-import java.util.Scanner;
+
 
 public class Main {
     public static Window window;
