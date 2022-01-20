@@ -21,7 +21,7 @@ public class Window extends JFrame {
     public JComboBox<String> dropdownMenu;
     public GridBagLayout gbWindow;
     public GridBagConstraints gbcWindow;
-    public boolean onFirstPage;
+    public boolean onFirstPage, addObjects;
     public JLabel title;
 
     //window constructor
@@ -29,16 +29,11 @@ public class Window extends JFrame {
     {
         //initialize variables
         super();
-        inputPanel=new JPanel(); outputPanel=new JPanel(); finalPanel=new JPanel();
-        tfInputField=new JTextField();
-        inputButton=new JButton("Enter");
-        deleteButton =new JButton("Delete");finalButton =new JButton("Complete");
-        outputList=new JList<>();
         outputVector=new Vector<>(); finalVector=new Vector<>();
         apiRequest=new DirectionCall();
         dropdownMenu=new JComboBox<>();
-        gbWindow=new GridBagLayout();
-        gbcWindow=new GridBagConstraints();
+        addObjects=true;
+        reinit();
 
         setTitle("DayScheduler");
         setLayout( gbWindow );
@@ -47,6 +42,7 @@ public class Window extends JFrame {
         setup();
         setFirstPage();
         onFirstPage=true;
+        addObjects =false;
 
 
 
@@ -63,13 +59,11 @@ public class Window extends JFrame {
         inputPanel.setLayout( gbInputPanel );
 
         tfInputField.setText("Enter first item to do");
-        if(tfInputField.getActionListeners().length==0)
-            tfInputField.addActionListener(new ButtonListener());
+        tfInputField.addActionListener(new ButtonListener());
         gbInputPanel.setConstraints( tfInputField, gbcInputPanel );
         inputPanel.add( tfInputField );
 
-        if(inputButton.getActionListeners().length==0)
-            inputButton.addActionListener(new ButtonListener());
+        inputButton.addActionListener(new ButtonListener());
         gbcInputPanel=new GridBagConstraints(4,3,4,1,1,0,11,0,new Insets(5,30,5,30),0,0);
         gbInputPanel.setConstraints(inputButton, gbcInputPanel );
         inputPanel.add(inputButton);
@@ -77,8 +71,11 @@ public class Window extends JFrame {
         dropdownMenu.setEditable(true);
         gbcInputPanel=new GridBagConstraints(9,3,4,1,0,0,11,1,new Insets(5,0,5,30),0,0);
         gbInputPanel.setConstraints(dropdownMenu, gbcInputPanel );
-        dropdownMenu.addItem("Enter Starting Location");
-        dropdownMenu.addActionListener(new ButtonListener());
+        if(addObjects) {
+            dropdownMenu.addItem("Enter Starting Location");
+            dropdownMenu.addActionListener(new ButtonListener());
+        }
+
         inputPanel.add(dropdownMenu);
 
         gbcWindow=new GridBagConstraints(4,5,11,5,1,0,11,1,new Insets(0,50,0,50),0,0);
@@ -94,12 +91,12 @@ public class Window extends JFrame {
 
         GridBagConstraints gbcOutputPanel = new GridBagConstraints(9,2,3,3,1,0,13,3,new Insets(0,0,0,0),0,0);
         outputPanel.setLayout( gblOutputPanel );
-        if(deleteButton.getActionListeners().length==0)
-            deleteButton.addActionListener( new ButtonListener() );
+        deleteButton.addActionListener( new ButtonListener() );
         gblOutputPanel.setConstraints(deleteButton, gbcOutputPanel );
         outputPanel.add(deleteButton);
 
         //Outputted list
+        outputList.setListData(outputVector);
         gbcOutputPanel=new GridBagConstraints(0,0,9,15,1,1,11,2,new Insets(5,0,0,0),0,0);
         gblOutputPanel.setConstraints( outputList, gbcOutputPanel );
         outputPanel.add( outputList );
@@ -109,8 +106,7 @@ public class Window extends JFrame {
         gbWindow.setConstraints(outputPanel, gbcWindow );
 
         //final button
-        if(finalButton.getActionListeners().length==0)
-            finalButton.addActionListener( new ButtonListener() );
+        finalButton.addActionListener( new ButtonListener() );
         gbcWindow=new GridBagConstraints(6,19,7,1,1,0,15,3,new Insets(30,0,30,0),0,0);
         gbWindow.setConstraints(finalButton, gbcWindow );
 
@@ -118,7 +114,6 @@ public class Window extends JFrame {
         title.setFont(title.getFont().deriveFont(32.0f));
         gbcWindow=new GridBagConstraints(5,1,9,3,1,0,11,0,new Insets(0,0,0,0),0,0);
         gbWindow.setConstraints( title, gbcWindow );
-
 
     }
 
@@ -143,7 +138,10 @@ public class Window extends JFrame {
     public void changePage(){
         System.out.println(onFirstPage);
         getContentPane().removeAll();
+        addObjects=false;
+        reinit();
         setup();
+        addObjects=true;
         if(onFirstPage)
             setSecondPage();
         else
@@ -160,5 +158,24 @@ public class Window extends JFrame {
 
         revalidate();
         repaint();
+    }
+
+    @Override
+    public  Component add(Component a){
+        if(addObjects)
+            super.add(a);
+        return a;
+    }
+
+    public void reinit(){
+        inputPanel=new JPanel(); outputPanel=new JPanel(); finalPanel=new JPanel();
+        tfInputField=new JTextField();
+        inputButton=new JButton("Enter");
+        deleteButton =new JButton("Delete");finalButton =new JButton("Complete");
+        outputList=new JList<>();
+        gbWindow=new GridBagLayout();
+        gbcWindow=new GridBagConstraints();
+        //only add components on first time setup
+
     }
 }
