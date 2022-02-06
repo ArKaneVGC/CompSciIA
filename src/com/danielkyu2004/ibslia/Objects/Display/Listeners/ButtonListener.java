@@ -1,14 +1,17 @@
 package com.danielkyu2004.ibslia.Objects.Display.Listeners;
 
+import com.danielkyu2004.ibslia.Objects.Directions.DirectionCall;
 import com.danielkyu2004.ibslia.Objects.Directions.DirectionsConnection;
 import com.danielkyu2004.ibslia.Objects.Directions.InputObject;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Vector;
 
 import static com.danielkyu2004.ibslia.Main.window;
 
@@ -36,16 +39,18 @@ public class ButtonListener implements ActionListener {
 
         if ( s == window.finalButton)
         {
+            DirectionCall call=null;
             if(window.onFirstPage) {
                 DirectionsConnection dirCon = new DirectionsConnection();
                 try {
                     dirCon.addWaypoints(dirCon.findPlaceIDs());
                     dirCon.addOrigin(window.outputVector.get(0));
-                    dirCon.getRoute();
+                    call=dirCon.getRoute();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
+            sort(call, window.onFirstPage, window.outputVector);
             window.changePage();
 
 
@@ -65,4 +70,22 @@ public class ButtonListener implements ActionListener {
         window.tfInputField.setText("");
         window.refresh();
     }
+
+    public static void sort(DirectionCall dirCall, boolean firstPage, Vector<InputObject> vec){
+        Vector<InputObject> outVec=new Vector<>();
+        outVec.add(vec.get(0));
+        if(firstPage) {
+            for (int i = 0; i < dirCall.routes[0].waypoint_order.length; i++)
+                outVec.add(vec.get(dirCall.routes[0].waypoint_order[i]+1));
+            outVec.add(vec.get(0));
+            window.outputVector=outVec;
+        }
+        else{
+            System.out.println("something removed");
+            vec.remove(vec.lastElement());
+        }
+
+
+    }
+
 }

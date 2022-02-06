@@ -40,6 +40,7 @@ public class DirectionsConnection {
     //get json and create object
     public DirectionCall getRoute() throws IOException {
         URL url=new URL(params.append("key=").append(Config.API_KEY).toString());
+        System.out.println(url);
         HttpURLConnection http= (HttpURLConnection)url.openConnection();
         http.setRequestMethod("GET");
         Gson gson = new Gson();

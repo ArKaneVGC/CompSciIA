@@ -5,6 +5,7 @@ import com.danielkyu2004.ibslia.Objects.Directions.InputObject;
 import com.danielkyu2004.ibslia.Objects.Display.Listeners.ButtonListener;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.util.Vector;
 
@@ -58,7 +59,7 @@ public class Window extends JFrame {
         GridBagConstraints gbcInputPanel = new GridBagConstraints(1,0,20,1,1,0,11,2,new Insets( 5,30,5,30 ),0,0);
         inputPanel.setLayout( gbInputPanel );
 
-        tfInputField.setText("Enter first item to do");
+        tfInputField.setText("Enter first item to do - Home, Hotel, etc.");
         tfInputField.addActionListener(new ButtonListener());
         gbInputPanel.setConstraints( tfInputField, gbcInputPanel );
         inputPanel.add( tfInputField );
@@ -83,7 +84,8 @@ public class Window extends JFrame {
 
         //finalpanel initialization
         gbWindow.setConstraints(finalPanel,gbcWindow);
-        finalPanel.add(outputList);
+
+        finalPanel.setBorder(new LineBorder(Color.BLACK));
 
         //outputpanel initialization
         outputPanel.setBorder( BorderFactory.createTitledBorder( "Output:" ) );
@@ -100,6 +102,11 @@ public class Window extends JFrame {
         gbcOutputPanel=new GridBagConstraints(0,0,9,15,1,1,11,2,new Insets(5,0,0,0),0,0);
         gblOutputPanel.setConstraints( outputList, gbcOutputPanel );
         outputPanel.add( outputList );
+        if(onFirstPage) {
+            finalPanel.setLayout(gblOutputPanel);
+            finalPanel.add(outputList);
+        }
+
 
 
         gbcWindow=new GridBagConstraints(4,13,11,5,1,0,11,1,new Insets(5,25,0,25),0,0);
@@ -154,8 +161,7 @@ public class Window extends JFrame {
 
 
     public void refresh()
-    {        System.out.println("hi");
-
+    {
         revalidate();
         repaint();
     }
