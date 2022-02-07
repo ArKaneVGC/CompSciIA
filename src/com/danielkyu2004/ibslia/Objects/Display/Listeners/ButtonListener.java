@@ -43,8 +43,9 @@ public class ButtonListener implements ActionListener {
             if(window.onFirstPage) {
                 DirectionsConnection dirCon = new DirectionsConnection();
                 try {
-                    dirCon.addWaypoints(dirCon.findPlaceIDs());
+                    InputObject[] placeIDs= dirCon.findPlaceIDs();
                     dirCon.addOrigin(window.outputVector.get(0));
+                    dirCon.addWaypoints(placeIDs);
                     call=dirCon.getRoute();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -52,9 +53,6 @@ public class ButtonListener implements ActionListener {
             }
             sort(call, window.onFirstPage, window.outputVector);
             window.changePage();
-
-
-
         }
     }
 
@@ -81,8 +79,7 @@ public class ButtonListener implements ActionListener {
             window.outputVector=outVec;
         }
         else{
-            System.out.println("something removed");
-            vec.remove(vec.lastElement());
+            vec.remove(vec.size()-1);
         }
 
 

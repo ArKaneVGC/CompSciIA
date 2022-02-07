@@ -31,9 +31,10 @@ public class DirectionsConnection {
 
     public boolean addWaypoints(InputObject[] placeIds){
         params.append("waypoints=optimize:true");
-        for(InputObject inputObject:placeIds){
-            params.append("|place_id:").append(inputObject.response.candidates[0].place_id).append('&');
+        for(int i=1;i<placeIds.length;i++){
+            params.append("|place_id:").append(placeIds[i].response.candidates[0].place_id);
         }
+        params.append('&');
         return true;
     }
 
@@ -69,7 +70,6 @@ public class DirectionsConnection {
 
         }
         return arr;
-
     }
 
 
