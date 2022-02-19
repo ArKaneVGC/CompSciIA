@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -43,16 +44,23 @@ public class ButtonListener implements ActionListener {
             if(window.onFirstPage) {
                 DirectionsConnection dirCon = new DirectionsConnection();
                 try {
-                    InputObject[] placeIDs= dirCon.findPlaceIDs();
+                    dirCon.addWaypoints(dirCon.findPlaceIDs());;
                     dirCon.addOrigin(window.outputVector.get(0));
-                    dirCon.addWaypoints(placeIDs);
+
                     call=dirCon.getRoute();
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
+            FileManager fm=new FileManager(new File("C:\\Users\\dyu99\\Documents\\ds.json"));
+            try {
+                fm.createFile(window.outputVector);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             sort(call, window.onFirstPage, window.outputVector);
             window.changePage();
+
         }
     }
 
