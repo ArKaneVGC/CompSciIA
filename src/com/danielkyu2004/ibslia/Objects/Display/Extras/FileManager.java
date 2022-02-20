@@ -1,8 +1,9 @@
-package com.danielkyu2004.ibslia.Objects.Display.Listeners;
+package com.danielkyu2004.ibslia.Objects.Display.Extras;
 import com.danielkyu2004.ibslia.Objects.Directions.InputObject;
 import com.google.gson.Gson;
 
 
+import java.awt.*;
 import java.io.*;
 import java.util.Scanner;
 import java.util.Vector;
@@ -10,14 +11,13 @@ import java.util.Vector;
 public class FileManager {
         public File file;
 
-        public FileManager (File f){
-                file=f;
+        public FileManager (){
+
         }
 
         public Vector<InputObject> readFile() throws IOException {
                 Vector<InputObject> vec = new Vector<>();
                 Scanner fileScan=new Scanner(this.file);
-                StringBuilder fileString=new StringBuilder();
                 Gson gson=new Gson();
                 while(fileScan.hasNextLine())
                         vec.add(gson.fromJson(fileScan.nextLine(),InputObject.class));
@@ -35,6 +35,19 @@ public class FileManager {
                         fw.append(gson.toJson(vec.get(i))).append("\n");
                 fw.flush();
                 return newFile;
+
+        }
+
+        public boolean readExplorer(int mode) throws IOException {
+                FileExplorer fe=new FileExplorer(mode);
+
+                try{
+                String filePath =fe.explore();
+                if(!filePath.endsWith(".json"))
+                        filePath+=".json";
+                file=new File(filePath);}
+                catch(ArrayIndexOutOfBoundsException e){}
+                return file!=null;
 
         }
 

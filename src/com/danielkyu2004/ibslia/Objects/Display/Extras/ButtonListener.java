@@ -1,14 +1,13 @@
-package com.danielkyu2004.ibslia.Objects.Display.Listeners;
+package com.danielkyu2004.ibslia.Objects.Display.Extras;
 
 import com.danielkyu2004.ibslia.Objects.Directions.DirectionCall;
 import com.danielkyu2004.ibslia.Objects.Directions.DirectionsConnection;
 import com.danielkyu2004.ibslia.Objects.Directions.InputObject;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -52,15 +51,30 @@ public class ButtonListener implements ActionListener {
                     ex.printStackTrace();
                 }
             }
-            FileManager fm=new FileManager(new File("C:\\Users\\dyu99\\Documents\\ds.json"));
-            try {
-                fm.createFile(window.outputVector);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
             sort(call, window.onFirstPage, window.outputVector);
             window.changePage();
 
+        }
+
+        if(s== window.saveFileItem){
+            FileManager fm=new FileManager();
+            try {
+                if(fm.readExplorer(FileDialog.SAVE))
+                    fm.createFile(window.outputVector);
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if(s== window.loadFileItem){
+            FileManager fm=new FileManager();
+            try {
+                if(fm.readExplorer(FileDialog.LOAD))
+                    fm.readFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
@@ -80,15 +94,11 @@ public class ButtonListener implements ActionListener {
     public static void sort(DirectionCall dirCall, boolean firstPage, Vector<InputObject> vec){
         Vector<InputObject> outVec=new Vector<>();
         outVec.add(vec.get(0));
-        if(firstPage) {
+        if(window.onFirstPage)
             for (int i = 0; i < dirCall.routes[0].waypoint_order.length; i++)
                 outVec.add(vec.get(dirCall.routes[0].waypoint_order[i]+1));
-            outVec.add(vec.get(0));
             window.outputVector=outVec;
-        }
-        else{
-            vec.remove(vec.size()-1);
-        }
+
 
 
     }
