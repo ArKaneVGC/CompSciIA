@@ -11,6 +11,8 @@ import java.net.*;
 
 public class Main {
     public static Window window;
+
+    //create window
     public static void main(String[] args) {
         window =new Window();
         window.setVisible(true);

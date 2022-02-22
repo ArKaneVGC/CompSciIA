@@ -13,8 +13,8 @@ import static com.danielkyu2004.ibslia.Config.API_KEY;
 
 
 public class DirectionsConnection {
-    public static String baseURL="https://maps.googleapis.com/maps/api/directions/json?";
-    public static String findPlaceURL="https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&fields=formatted_address%2Cplace_id%2Cname&input=";
+    public static final String baseURL="https://maps.googleapis.com/maps/api/directions/json?";
+    public static final String findPlaceURL="https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&fields=formatted_address%2Cplace_id%2Cname&input=";
     public StringBuilder params;
     public static char[] invalidChars= {'!','*','\'','(',')',';',':','@','&','=','+','$', '/','?','%','#','[',']', ' '};
 
@@ -29,10 +29,10 @@ public class DirectionsConnection {
         return true;
     }
 
-    public boolean addWaypoints(InputObject[] placeIds){
+    public boolean addWaypoints(Vector<InputObject> placeIds){
         params.append("waypoints=optimize:true");
-        for(int i=1;i<placeIds.length;i++){
-            params.append("|place_id:").append(placeIds[i].response.candidates[0].place_id);
+        for(int i=1;i<placeIds.size();i++){
+            params.append("|place_id:").append(placeIds.get(i).response.candidates[0].place_id);
         }
         params.append('&');
         return true;
@@ -41,35 +41,29 @@ public class DirectionsConnection {
     //get json and create object
     public DirectionCall getRoute() throws IOException {
         URL url=new URL(params.append("key=").append(Config.API_KEY).toString());
-        System.out.println(url);
         HttpURLConnection http= (HttpURLConnection)url.openConnection();
         http.setRequestMethod("GET");
         Gson gson = new Gson();
         Scanner s=new Scanner(http.getInputStream());
         StringBuilder sb=new StringBuilder();
         while(s.hasNextLine()) sb.append(s.nextLine());
-        System.out.println(sb);
         DirectionCall response =gson.fromJson(sb.toString(),DirectionCall.class);
         http.disconnect();
         return response;
     }
 
-    public InputObject[] findPlaceIDs() throws IOException {
-        InputObject[] arr=new InputObject[Main.window.outputVector.size()];
-        for(int i=0;i<Main.window.outputVector.size();i++){
-            URL url =new URL(findPlaceURL+Main.window.outputVector.get(i).toURL()+"&key="+API_KEY);
+    public Vector<InputObject> findPlaceIDs(Vector<InputObject> vec) throws IOException {
+        for(int i=0;i<vec.size();i++){
+            URL url =new URL(findPlaceURL+vec.get(i).toURL()+"&key="+API_KEY);
             HttpURLConnection con = (HttpURLConnection)url.openConnection();
             con.setRequestMethod("GET");
             Gson gson=new Gson();
             Scanner s=new Scanner(con.getInputStream());
             StringBuilder sb=new StringBuilder();
             while(s.hasNextLine()) sb.append(s.nextLine());
-            System.out.println(sb);
-            Main.window.outputVector.get(i).response=gson.fromJson(sb.toString(), PlaceIDResponse.class);
-            arr[i]=Main.window.outputVector.get(i);
-
+            vec.get(i).response=gson.fromJson(sb.toString(), PlaceIDResponse.class);
         }
-        return arr;
+        return vec;
     }
 
 

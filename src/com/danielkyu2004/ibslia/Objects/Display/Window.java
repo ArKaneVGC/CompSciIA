@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Vector;
 
+import static com.danielkyu2004.ibslia.Main.window;
+
 
 //All generated with jvider
 public class Window extends JFrame {
@@ -50,6 +52,8 @@ public class Window extends JFrame {
     }
 
 
+
+    //set all constraints and listeners
     public void setup(){
         //input panel
         tfInputField.setText("Enter first item to do - Home, Hotel, etc.");
@@ -107,6 +111,9 @@ public class Window extends JFrame {
         constrain(title,5,1,9,3,1,0,11,0,new Insets(0,0,0,0),0,0);
 
     }
+
+
+    //add components for first page
     private void setFirstPage(){
 
         add(inputPanel);
@@ -116,6 +123,7 @@ public class Window extends JFrame {
         onFirstPage=true;
     }
 
+    //add components for second page
     private void setSecondPage(){
 
         System.out.println(onFirstPage);
@@ -125,9 +133,9 @@ public class Window extends JFrame {
         onFirstPage=false;
     }
 
+    //check which page and switch to other
     public void changePage(){
-        System.out.println(onFirstPage);
-
+        //delete page
         getContentPane().removeAll();
         addObjects=false;
         reinit();
@@ -150,6 +158,7 @@ public class Window extends JFrame {
         repaint();
     }
 
+    //only add objects if addObjects are true for window
     @Override
     public Component add(Component a){
         if(addObjects)
@@ -157,6 +166,7 @@ public class Window extends JFrame {
         return a;
     }
 
+    //set constraints with a separate method
     public Component constrain(Component comp, int gx, int gy, int gwidth, int gheight, double wx, double wy, int anch, int f, Insets ins, int ix, int iy){
         gbc.gridx=gx;
         gbc.gridy=gy;
@@ -187,5 +197,19 @@ public class Window extends JFrame {
         outputList=new JList<>();
         gbl=new GridBagLayout();
         gbc=new GridBagConstraints();
+    }
+
+    //add an input object with task t and location l to output
+    public void addToOutput(String t, String l){
+        outputVector.add(new InputObject(t,l));
+        boolean contains=false;
+        for(int i=0;i<dropdownMenu.getItemCount()&&!contains;i++)
+            contains= dropdownMenu.getItemAt(i).trim().equalsIgnoreCase(l.trim());
+        if(!contains)
+            dropdownMenu.addItem(l);
+        dropdownMenu.setSelectedItem(l);
+        outputList.setListData(window.outputVector);
+        tfInputField.setText("");
+        refresh();
     }
 }

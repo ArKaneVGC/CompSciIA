@@ -5,6 +5,7 @@ import com.danielkyu2004.ibslia.Objects.Directions.DirectionsConnection;
 import com.danielkyu2004.ibslia.Objects.Directions.InputObject;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +24,7 @@ public class ButtonListener implements ActionListener {
         //input button
         if ( s == window.inputButton||s== window.tfInputField||(s==window.dropdownMenu&& !Objects.equals(e.getActionCommand(), "comboBoxChanged")))
             if(!window.tfInputField.getText().isEmpty())
-            addToOutput(StringUtils.normalizeSpace(window.tfInputField.getText()), Objects.requireNonNull(StringUtils.normalizeSpace((String) window.dropdownMenu.getSelectedItem())));
+            window.addToOutput(StringUtils.normalizeSpace(window.tfInputField.getText()), Objects.requireNonNull(StringUtils.normalizeSpace((String) window.dropdownMenu.getSelectedItem())));
 
 
         //delete from output button
@@ -43,7 +44,7 @@ public class ButtonListener implements ActionListener {
             if(window.onFirstPage) {
                 DirectionsConnection dirCon = new DirectionsConnection();
                 try {
-                    dirCon.addWaypoints(dirCon.findPlaceIDs());;
+                    dirCon.addWaypoints(dirCon.findPlaceIDs(window.outputVector));
                     dirCon.addOrigin(window.outputVector.get(0));
 
                     call=dirCon.getRoute();
@@ -62,45 +63,29 @@ public class ButtonListener implements ActionListener {
                 if(fm.readExplorer(FileDialog.SAVE))
                     fm.createFile(window.outputVector);
 
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            } catch (IOException ex) {JOptionPane.showMessageDialog(window, "Error has occurred.");}
         }
 
         if(s== window.loadFileItem){
             FileManager fm=new FileManager();
             try {
                 if(fm.readExplorer(FileDialog.LOAD))
-                    fm.readFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+                    window.outputVector=fm.readFile();
+                    window.outputList.setListData(window.outputVector);
+                    window.refresh();}
+            catch (IOException ex) {JOptionPane.showMessageDialog(window, "Error has occurred.");}
         }
     }
 
-    public static void addToOutput(String t, String l){
-        window.outputVector.add(new InputObject(t,l));
-        boolean contains=false;
-        for(int i=0;i<window.dropdownMenu.getItemCount()&&!contains;i++)
-            contains= window.dropdownMenu.getItemAt(i).trim().equalsIgnoreCase(l.trim());
-        if(!contains)
-            window.dropdownMenu.addItem(l);
-        window.dropdownMenu.setSelectedItem(l);
-        window.outputList.setListData(window.outputVector);
-        window.tfInputField.setText("");
-        window.refresh();
-    }
+
 
     public static void sort(DirectionCall dirCall, boolean firstPage, Vector<InputObject> vec){
         Vector<InputObject> outVec=new Vector<>();
         outVec.add(vec.get(0));
-        if(window.onFirstPage)
+        if(firstPage)
             for (int i = 0; i < dirCall.routes[0].waypoint_order.length; i++)
                 outVec.add(vec.get(dirCall.routes[0].waypoint_order[i]+1));
             window.outputVector=outVec;
-
-
-
     }
 
 }
